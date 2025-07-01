@@ -32,22 +32,27 @@ const readlineSync = require('readline-sync');
 // Initial Code with Bugs (modified to use readline-sync)
 let animals = [];
 let fees = [];
+
 function addAnimal(name, fee) {
-    if (!name || fee < 0) {
+    if (!name || isNaN(fee) || < 0) {
         throw new Error("Invalid animal name or adoption fee!");
     }
-    animals.push(name);
-    fees.push(fee);
+    animals.push(name.toLowerCase());
+    fees.push(parseFloat(fee));
+    console.log(`${name} is added with a fee of $${fee}.`);
 }
+
 function getAdoptionFee(animalName) {
-    let index = animals.indexOf(animalName);
+    let index = animals.indexOf(animalName.toLowerCase());
     if (index === -1) {
         throw new Error("Animal not found in records!");
     }
     return fees[index];
 }
+
 // Main program
 console.log("Welcome to the Pet Shelter System");
+
 while (true) {
     let action = readlineSync.question("Choose an action: 'add', 'fee', or 'exit': ").toLowerCase();
     if (action === "exit") {
@@ -64,10 +69,10 @@ while (true) {
         console.log(`${animal}'s adoption fee is $${getAdoptionFee(animal)}.`);
     } else {
         console.log("Invalid action. Please choose 'add', 'fee', or 'exit'.");
+    } catch (error) {
+        console.log("Error", error.message);
     }
 }
-
-
 
 /*
 Problems to Solve
